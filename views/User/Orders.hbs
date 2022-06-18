@@ -1,0 +1,31 @@
+<section>
+    <div class="container">
+        
+
+
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Status</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                {{#each order}}
+                <tr>
+                    <td>{{this.delivery.date}}</td>
+                    <td>{{this.delivery.fname}} {{this.delivery.lname}}</td>
+                    <td>{{this.total}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                     <td>{{this.status}}</td>
+                    <td><a class="btn btn-primary ms-5" href="/order-details/{{this._id}}" role="button">View Items</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

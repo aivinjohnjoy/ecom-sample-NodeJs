@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\bin",
+    "\\config",
+    "\\helpers",
+    "\\public",
+    "\\routes"
+  ],
+  "SelectedNode": "\\helpers\\user-helpers.js",
+  "PreviewInSolutionExplorer": false
+}

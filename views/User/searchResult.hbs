@@ -1,0 +1,24 @@
+<section>
+    <div class="container mt-5">
+        <div class="row">
+            <h1>Saerch Results</h1>
+            {{#each SearchResults}}
+            <div class="col-md-3 p-3 ">
+                <div class="card align-center" style="width: 15rem; height:25rem;">
+                    <img src="/product-image/{{this._id}}.jpg" class="card-img-top width: 100%;
+    height: 15vw;
+    object-fit: cover; rounded mx-auto d-block; p-1" alt="..." style="height: 10rem; width: 10rem;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.Name}}</h5>
+                        <h5 class="card-title">{{this.Price}}</h5>
+                        <p class="card-text">{{this.Catagory}}</p>
+                        <p class="card-text">{{this.Description}}</p>
+                        <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add To Cart</button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>

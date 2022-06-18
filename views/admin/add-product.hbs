@@ -1,0 +1,35 @@
+<section>
+    <div class="container">
+
+        <h1 class="mt-4">Add Product</h1>
+        <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+            <div class="col-lg-5 m-5">
+                <div>
+                    {{#if alert}}
+                    <p style="color:red">{{alert}}</p>
+                    {{/if}}
+                </div>
+
+
+                <label for="">Name</label>
+                <input type="text" class="form-control col-xs-4" name="Name">
+
+                <label for="" class="mt-4">Price</label>
+                <input type="text" class="form-control" name="Price">
+
+
+                <label for="" class="mt-4">Catagory</label>
+                <input type="text" class="form-control" name="Catagory">
+
+                <label for="" class="mt-4">Description</label>
+                <input type="text" class="form-control" name="Description">
+
+
+                <label for="" class="mt-4">Image</label>
+                <input type="file" class="form-control" name="image">
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </div>
+        </form>
+
+    </div>
+</section>

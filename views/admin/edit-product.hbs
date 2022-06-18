@@ -1,0 +1,43 @@
+<section>
+    <div class="container">
+
+        <h1 class="mt-4">Edit Product</h1>
+        <form action="/admin/productedit/{{this._id}}" method="post" enctype="multipart/form-data">
+            <div class="col-lg-5 m-5">
+                <div>
+                    {{#if alert}}
+                    <p style="color:red">{{alert}}</p>
+                    {{/if}}
+                </div>
+
+
+                <label for="">Name</label>
+                <input type="text" class="form-control col-xs-4" name="Name" value="{{this.Name}}">
+
+                <label for="" class="mt-4">Price</label>
+                <input type="text" class="form-control" name="Price" value="{{this.Price}}">
+
+
+                <label for="" class="mt-4">Catagory</label>
+                <input type="text" class="form-control" name="Catagory" value="{{this.Catagory}}">
+
+                <label for="" class="mt-4">Description</label>
+                <input type="text" class="form-control" name="Description" value="{{this.Description}}">
+
+
+                <label for="" class="mt-4">Image</label>
+                <img src="/product-image/{{this._id}}.jpg" alt="" style="width:60px;height:70px;" class="mt-2 mb-2" id="viewimage">
+                <input type="file" class="form-control" name="image" onchange="changeImage(event)">
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </div>
+        </form>
+
+    </div>
+</section>
+
+
+<script>
+    function changeImage(event){
+        document.getElementById("viewimage").src=URL.createObjectURL(event.target.files[0]);
+    }
+</script>
