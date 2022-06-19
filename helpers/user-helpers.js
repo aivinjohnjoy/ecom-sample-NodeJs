@@ -443,11 +443,35 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let count = 0
             if (user) {
-                cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(user._id) });
-console.log('cart count',cart)
-                if (user) {
-                    count = cart.products.length;
-                } resolve(count)
+                let cart = await db.get().collection(collection.CART_COLLECTION)
+                    .aggregate([
+                        {
+                            $match: { user: objectId(user._id) }
+                        },
+                        {
+                            $unwind: '$products'
+                        }, {
+                            $project: {
+
+                                quantity: '$products.quantity',
+
+                            }
+
+                        }, {
+                            $group: {
+                                _id: null,
+                                totalcount: { $sum: '$quantity' }
+
+                            }
+                        }
+                    ]).toArray();
+                console.log('cart count', cart)
+
+                count1 = cart[0];
+                count=count1.totalcount
+
+                console.log('count', count)
+                resolve(count)
             }
             resolve(count)
 
