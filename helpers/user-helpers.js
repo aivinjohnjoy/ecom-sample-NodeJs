@@ -467,11 +467,18 @@ module.exports = {
                     ]).toArray();
                 console.log('cart count', cart)
 
-                count1 = cart[0];
-                count=count1.totalcount
+                if (cart==null){
+                    let count1 = cart[0];
+                    count=count1.totalcount
+    
+                    console.log('count', count)
+                    resolve(count)
+                }else{
+                    resolve(count)
 
-                console.log('count', count)
-                resolve(count)
+                }
+
+               
             }
             resolve(count)
 
