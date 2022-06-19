@@ -5,11 +5,11 @@ const { USER_COLLECTION } = require('../config/collections')
 const { response } = require('express')
 const { Collection } = require('mongodb')
 const objectId = require('mongodb').ObjectId
-const Razorpay=require('razorpay')
+const Razorpay = require('razorpay')
 const res = require('express/lib/response')
 const { reject } = require('bcrypt/promises')
 const { resolve } = require('path')
-var instance = new Razorpay({  key_id: 'rzp_test_ESl6bw4QESz3CO',  key_secret: '2Ar1z8colgVp5zFAiRSJVGay',});
+var instance = new Razorpay({ key_id: 'rzp_test_ESl6bw4QESz3CO', key_secret: '2Ar1z8colgVp5zFAiRSJVGay', });
 
 module.exports = {
     doSignup: (userData) => {
@@ -143,17 +143,7 @@ module.exports = {
     },
 
 
-    getCartCount: (userId) => {
-        return new Promise(async (resolve, reject) => {
-            let count = 0
-            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) });
-            if (cart) {
-                count = cart.products.length;
-            } resolve(count)
-        }
-        )
 
-    },
 
 
 
@@ -331,7 +321,7 @@ module.exports = {
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(order.userId) })
                 resolve(response)
-                console.log('response if plce order',response.insertedId)
+                console.log('response if plce order', response.insertedId)
             })
         })
 
@@ -385,67 +375,86 @@ module.exports = {
             resolve(orderItems)
         })
     },
-    generateRazorpay: (orderId,total)=>{
-    
-        return new Promise ((resolve,reject)=>{
+    generateRazorpay: (orderId, total) => {
+
+        return new Promise((resolve, reject) => {
             var options = {
-                amount: total*100,  // amount in the smallest currency unit
-                currency:'INR',
-                receipt:''+orderId.insertedId
-              };
-              instance.orders.create(options, function(err, order) {
-                console.log('order razorpay',order);
+                amount: total * 100,  // amount in the smallest currency unit
+                currency: 'INR',
+                receipt: '' + orderId.insertedId
+            };
+            instance.orders.create(options, function (err, order) {
+                console.log('order razorpay', order);
                 resolve(order)
-              });
+            });
         })
     },
 
-    verifyPayemnt:(details)=>{
-        return new Promise((resolve,reject)=>{
+    verifyPayemnt: (details) => {
+        return new Promise((resolve, reject) => {
             var crypto = require('crypto');
-            let hmac = crypto.createHmac('sha256', '2Ar1z8colgVp5zFAiRSJVGay'); 
-            hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
-            hmac=hmac.digest('hex')
+            let hmac = crypto.createHmac('sha256', '2Ar1z8colgVp5zFAiRSJVGay');
+            hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+            hmac = hmac.digest('hex')
 
-            if(hmac==details['payment[razorpay_signature]']){
+            if (hmac == details['payment[razorpay_signature]']) {
                 resolve()
-            }else{
+            } else {
                 reject()
             }
 
-            
+
 
         })
 
     },
 
-    changePaymentstatus:(orderId)=>{
-        return new Promise((resolve,reject)=>{
+    changePaymentstatus: (orderId) => {
+        return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION)
-            .updateOne({_id:objectId(orderId)},
-            {
-                $set:{
-                    staus:"place"
-                }
-            }
-            ).then(()=>{
-                resolve()
-            })
+                .updateOne({ _id: objectId(orderId) },
+                    {
+                        $set: {
+                            staus: "place"
+                        }
+                    }
+                ).then(() => {
+                    resolve()
+                })
         })
     },
 
-    productSearch: (word)=>{
-        return new Promise(async(resolve,reject)=>{
-            let key1=word.searhKey
-            let key=String(key1)
+    productSearch: (word) => {
+        return new Promise(async (resolve, reject) => {
+            let key1 = word.searhKey
+            let key = String(key1)
             console.log('key', key)
-          // let searchResult= await db.get().collection(collection.PRODUCT_COLLECTION).
-         //  aggregate([{$match : { Name: { '$regex':word.searhKey} }
-       // }]).toArray()
-       let searchResult= await db.get().collection(collection.PRODUCT_COLLECTION).find({ Name:{'$regex': word,'$options' : 'i'}} ).toArray()
-           console.log('search result',searchResult)
-           resolve(searchResult)
+            // let searchResult= await db.get().collection(collection.PRODUCT_COLLECTION).
+            //  aggregate([{$match : { Name: { '$regex':word.searhKey} }
+            // }]).toArray()
+            let searchResult = await db.get().collection(collection.PRODUCT_COLLECTION).find({ Name: { '$regex': word, '$options': 'i' } }).toArray()
+            console.log('search result', searchResult)
+            resolve(searchResult)
         })
 
+    },
+
+    cartcountCheck: (user) => {
+        return new Promise(async (resolve, reject) => {
+            let count = 0
+            if (user) {
+                cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(user._id) });
+
+                if (user) {
+                    count = cart.products.length;
+                } resolve(count)
+            }
+            resolve(count)
+
+        })
     }
+
+
+
+
 }

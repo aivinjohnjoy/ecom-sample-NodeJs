@@ -30,9 +30,15 @@
                         function myFunction() {
                             console.log("function called")
                             var key=document.getElementById("keyWord").value
-                            var url="/search-result/"
+                            if(key){
+                                var url="/search-result/"
                             console.log("function called", url+key)
                             location.href=url+key
+
+                            }else{
+                                 location.href='/'
+                            }
+                            
                     
                         }
                     </script>

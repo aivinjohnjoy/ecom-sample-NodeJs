@@ -16,14 +16,12 @@ const varifyLogin = (req, res, next) => {
 }
 
 
+
 /* GET home page. */
 router.get('/', async function (req, res, next) {
 
-  let user = req.session.user
-  let cartCount = 0
-  if (req.session.user) {
-    cartCount = await userHelpers.getCartCount(req.session.user._id)
-  }
+let user = req.session.user
+ let cartCount= await userHelpers.cartcountCheck(req.session.user)
 
 
   productHelper.getAllPtoducts().then((products) => {
@@ -202,16 +200,8 @@ router.get('/search-result/:q',async(req,res)=>{
   console.log(req.params.q)
   
 let SearchResults= await userHelpers.productSearch(req.params.q)
-res.render('User/searchResult',{SearchResults})
-//   res.json({res:true})
-//   console.log('result before get',SearchResults)
-  
-//   router.get('/search-result', (req,res)=>{
-//    console.log('result',SearchResults)
-//    
- 
- 
-//  })
+let cartCount= await userHelpers.cartcountCheck(req.session.user)
+res.render('User/searchResult',{SearchResults,user: req.session.user,cartCount})
 
 })
 
