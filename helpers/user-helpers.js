@@ -444,7 +444,7 @@ module.exports = {
             let count = 0
             if (user) {
                 cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(user._id) });
-
+console.log('cart count',cart)
                 if (user) {
                     count = cart.products.length;
                 } resolve(count)
